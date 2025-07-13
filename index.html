@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Centro Médico</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- CABEÇALHO COM LOGO E BUSCA -->
+    <header class="header">
+        <img src="logo.png" alt="Logo" class="logo" />
+        <h1>@centromedico</h1>
+        <p class="slogan">Cuidando da sua saúde com carinho 💙</p>
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar especialidade..."
+            onkeyup="filtrarServicos()" />
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="container">
+
+        <!-- FALE CONOSCO -->
+        <section class="fale-conosco">
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de mais informações sobre os atendimentos."
+                class="link-button destaque" target="_blank" rel="noopener noreferrer">
+                💬 <strong>Fale Conosco</strong>
+            </a>
+        </section>
+
+        <!-- CONSULTAS -->
+        <h2 class="category-title">👩‍⚕️ Consultas</h2>
+        <section class="links">
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Clínico Geral*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Clínico Geral</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Dermatologista*."
+                class="link-button" target="_blank" rel="noopener noreferrer">Dermatologista</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Pediatra*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Pediatra</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Ortopedista*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Ortopedista</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Urologista*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Urologista</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Cardiologista*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Cardiologista</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Ginecologista*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Ginecologista</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Psiquiatra*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Psiquiatra</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Neurologista*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Neurologista</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Psicóloga*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Psicóloga</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Nutricionista*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Nutricionista</a>
+        </section>
+
+        <!-- EXAMES E TERAPIAS -->
+        <h2 class="category-title">🧪 Exames e Terapias</h2>
+        <section class="links">
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar *Exames de Laboratório*."
+                class="link-button" target="_blank" rel="noopener noreferrer">Exames de Laboratório</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar *Ultrassonografia*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Ultrassonografia</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar *Neuropsicologia*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Neuropsicologia</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar *Fisioterapia*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Fisioterapia</a>
+            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Dentista*." class="link-button"
+                target="_blank" rel="noopener noreferrer">Dentista</a>
+        </section>
+    </main>
+
+    <!-- RODAPÉ MODERNO -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-item">
+                <h4>📍 Endereço</h4>
+                <p>Rua da Saúde, 123<br>Centro, Cidade/UF</p>
+            </div>
+            <div class="footer-item">
+                <h4>⏰ Horário</h4>
+                <p>Seg a Sex<br>08h às 18h</p>
+            </div>
+            <div class="footer-item">
+                <h4>🔗 Redes Sociais</h4>
+                <div class="social-links">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+                    <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer">Localização</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÃO FLUTUANTE DO WHATSAPP -->
+    <a href="https://wa.me/5579981164388" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+        title="Agende pelo WhatsApp">
+        <img src="img/download.png" alt="Ícone do WhatsApp" />
+    </a>
+
+    <!-- SCRIPT DE BUSCA -->
+    <script>
+        function filtrarServicos() {
+            const filtro = document.getElementById("searchInput").value.toLowerCase();
+            const links = document.querySelectorAll(".link-button");
+
+            links.forEach(link => {
+                const texto = link.textContent.toLowerCase();
+                link.style.display = texto.includes(filtro) ? "block" : "none";
+            });
+        }
+    </script>
+</body>
+
+</html>
