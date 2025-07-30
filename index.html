@@ -4,115 +4,200 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Centro Médico</title>
+    <title>Vitalle Centro Médico</title>
+    <link rel="icon" type="image/png" href="img/logo navegador.png" />
+
     <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" /> -->
+    <!-- outros links... -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
+
 <body>
-    <!-- CABEÇALHO COM LOGO E BUSCA -->
     <header class="header">
-        <img src="logo.png" alt="Logo" class="logo" />
-        <h1>@centromedico</h1>
+        <img src="img/vitalle logomarca (2).png" alt="Logo do Centro Médico Vitalle" class="logo" />
+        <h1>@Centromedicovitalle</h1>
         <p class="slogan">Cuidando da sua saúde com carinho 💙</p>
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Buscar especialidade..."
-            onkeyup="filtrarServicos()" />
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="container">
+    <!-- Coloque antes do conteúdo principal -->
+    <div class="onda-topo"></div>
 
-        <!-- FALE CONOSCO -->
+
+    <main class="container">
         <section class="fale-conosco">
             <a href="https://wa.me/5579981164388?text=Olá! Gostaria de mais informações sobre os atendimentos."
                 class="link-button destaque" target="_blank" rel="noopener noreferrer">
-                💬 <strong>Fale Conosco</strong>
+                <strong>Fale Conosco</strong>
             </a>
         </section>
 
-        <!-- CONSULTAS -->
-        <h2 class="category-title">👩‍⚕️ Consultas</h2>
-        <section class="links">
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Clínico Geral*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Clínico Geral</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Dermatologista*."
-                class="link-button" target="_blank" rel="noopener noreferrer">Dermatologista</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Pediatra*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Pediatra</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Ortopedista*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Ortopedista</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Urologista*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Urologista</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Cardiologista*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Cardiologista</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Ginecologista*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Ginecologista</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Psiquiatra*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Psiquiatra</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Neurologista*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Neurologista</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Psicóloga*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Psicóloga</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Nutricionista*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Nutricionista</a>
-        </section>
+        <!-- ESPECIALIDADES -->
+        <div class="card">
+            <button class="card-header" onclick="toggleCard('cardEspecialidades')"> Especialidades Médicas</button>
+            <div class="card-body" id="cardEspecialidades"></div>
 
-        <!-- EXAMES E TERAPIAS -->
-        <h2 class="category-title">🧪 Exames e Terapias</h2>
-        <section class="links">
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar *Exames de Laboratório*."
-                class="link-button" target="_blank" rel="noopener noreferrer">Exames de Laboratório</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar *Ultrassonografia*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Ultrassonografia</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar *Neuropsicologia*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Neuropsicologia</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar *Fisioterapia*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Fisioterapia</a>
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar com *Dentista*." class="link-button"
-                target="_blank" rel="noopener noreferrer">Dentista</a>
-        </section>
+        </div>
+
+        <!-- ATENDIMENTOS -->
+        <div class="card">
+            <button class="card-header" onclick="toggleCard('cardAtendimentos')"> Atendimentos</button>
+            <div class="card-body" id="cardAtendimentos"></div>
+        </div>
+
+        <!-- EXAMES -->
+        <div class="card">
+            <button class="card-header" onclick="toggleCard('cardExames')"> Exames</button>
+            <div class="card-body" id="cardExames"></div>
+        </div>
+
+        <!-- TERAPIA HOLÍSTICA INTEGRATIVA -->
+        <div class="card">
+            <button class="card-header" onclick="toggleCard('cardTerapias')"> Terapia Holística
+                Integrativa</button>
+            <div class="card-body" id="cardTerapias"></div>
+        </div>
+
     </main>
 
-    <!-- RODAPÉ MODERNO -->
-    <footer class="footer">
-        <div class="footer-grid">
-            <div class="footer-item">
-                <h4>📍 Endereço</h4>
-                <p>Rua da Saúde, 123<br>Centro, Cidade/UF</p>
-            </div>
-            <div class="footer-item">
-                <h4>⏰ Horário</h4>
-                <p>Seg a Sex<br>08h às 18h</p>
-            </div>
-            <div class="footer-item">
-                <h4>🔗 Redes Sociais</h4>
-                <div class="social-links">
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
-                    <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer">Localização</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- BOTÃO FLUTUANTE DO WHATSAPP -->
-    <a href="https://wa.me/5579981164388" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
-        title="Agende pelo WhatsApp">
-        <img src="img/download.png" alt="Ícone do WhatsApp" />
-    </a>
-
-    <!-- SCRIPT DE BUSCA -->
     <script>
-        function filtrarServicos() {
-            const filtro = document.getElementById("searchInput").value.toLowerCase();
-            const links = document.querySelectorAll(".link-button");
+        // Especialidades Médicas
+        const especialidades = [
+            { id: 'neuro', nome: 'Neurologia', medico: 'Dr Leandro Araújo', emoji: '' },
+            { id: 'clinico', nome: 'Clínico Geral', medico: 'Dr Leandro Araújo / Dr Robson Xisto', emoji: '' },
+            { id: 'cardio', nome: 'Cardiologista', medico: 'Dr Robson Xisto', emoji: '' },
+            { id: 'uro', nome: 'Urologista', medico: 'Dr Jaime Bonfim', emoji: '' },
+            { id: 'ortopedista', nome: 'Ortopedista', medico: 'Dr Cláudio Soares', emoji: '' },
+            { id: 'ortopedia', nome: 'Atendimento em Ortopedia', medico: 'Dr Breno Gomes', emoji: '' },
+            { id: 'psiquiatria', nome: 'Atendimento em Psiquiatria', medico: 'Dr Bruno Suzart', emoji: '' },
+            { id: 'gineco', nome: 'Ginecologista Obstétrica', medico: 'Dra Mônica Ricardo', emoji: '' },
+            { id: 'dermato', nome: 'Dermatologista', medico: 'Dra Diana Brandão', emoji: '' },
+            { id: 'gastro', nome: 'Gastroenterologia', medico: 'Dra Manuela Lisboa', emoji: '' },
+            { id: 'cirurgiaodonto', nome: 'Cirurgião Dentista', medico: 'Dr Gyovanni Brito', emoji: '' },
+            { id: 'ortodontista', nome: 'Ortodontista', medico: 'Dr Gyovanni Brito', emoji: '' },
+            { id: 'implanto', nome: 'Implantodontista', medico: 'Dr Jacson Costa', emoji: '' },
+            { id: 'odonto', nome: 'Odontopediatra', medico: 'Dra Edivânia Oliveira', emoji: '' },
+        ];
 
-            links.forEach(link => {
-                const texto = link.textContent.toLowerCase();
-                link.style.display = texto.includes(filtro) ? "block" : "none";
+        // Atendimentos
+        const atendimentos = [
+            { id: 'nutri', nome: 'Nutricionista', medico: 'Maria Laisa Oliveira', emoji: '' },
+            { id: 'nutriinfantil', nome: 'Nutricionista Infantil', medico: 'Lara Evelin Nascimento', emoji: '' },
+            { id: 'psicopedagoga', nome: 'Psicopedagoga', medico: 'Aline Dias', emoji: '' },
+            { id: 'neuropsico', nome: 'Neuro Psicopedagoga', medico: 'Quitéria Lopes', emoji: '' },
+            { id: 'psicologo', nome: 'Psicólogo', medico: 'Jucyellen Lima', emoji: '' },
+            { id: 'neuropsicologa', nome: 'Neuropsicóloga', medico: 'Milene Cicigliano', emoji: '' },
+            { id: 'fisio', nome: 'Fisioterapia', medico: 'Fabiana Monteiro', emoji: '' },
+        ];
+
+        // Exames
+        const exames = [
+            { id: 'mapa', nome: 'MAPA', emoji: '' },
+            { id: 'holter', nome: 'Holter de 24 horas', emoji: '' },
+            { id: 'eletro', nome: 'Eletrocardiograma', emoji: '' },
+            { id: 'eco', nome: 'Ecocardiograma', emoji: '' },
+            { id: 'endoscopia', nome: 'Endoscopia', emoji: '' },
+            { id: 'laboratorio', nome: 'Laboratório', emoji: '' },
+            { id: 'ultra', nome: 'Ultrassonografia', emoji: '' },
+        ];
+
+        // Terapias
+        const terapias = [
+
+            { id: 'massagem', nome: 'Massagem', medico: 'Ísis Rosa', emoji: '' },
+            { id: 'drenagem-linfatica', nome: 'Drenagem Linfática', medico: 'Ísis Rosa', emoji: '' },
+            { id: 'gesso-terapia', nome: 'Drenagem com Gesso Terapia', medico: 'Ísis Rosa', emoji: '' },
+        ];
+
+
+
+        function renderCards(lista, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            lista.forEach(e => {
+                container.innerHTML += `
+<div class="card">
+  <button class="card-header" onclick="toggleUnique('${e.id}', '${containerId}')">${e.emoji} <strong>${e.nome}</strong></button>
+  <div class="card-body subcard" id="${e.id}">
+    ${e.medico ? `<p>${e.medico}</p>` : ''}
+    <a class="link-button" style="margin-top: 0.8rem; background: #25d366; color: white; border: none;"
+      href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar ${e.medico ? `com ${e.medico}` : ''} (${e.nome})"
+      target="_blank" rel="noopener noreferrer">
+      Agendar via WhatsApp
+    </a>
+  </div>
+</div>`;
             });
         }
+
+        function toggleCard(id) {
+            document.querySelectorAll('.card-body').forEach(div => {
+                if (div.id === id) {
+                    div.classList.toggle('active');
+                } else {
+                    div.classList.remove('active');
+                }
+            });
+        }
+
+        function toggleUnique(id, containerId) {
+            document.querySelectorAll(`#${containerId} .subcard`).forEach(c => {
+                if (c.id !== id) c.classList.remove('active');
+            });
+            const el = document.getElementById(id);
+            el.classList.toggle('active');
+        }
+
+        window.onload = () => {
+            renderCards(especialidades, 'cardEspecialidades');
+            renderCards(atendimentos, 'cardAtendimentos');
+            renderCards(exames, 'cardExames');
+            renderCards(terapias, 'cardTerapias'); // <--- adicionado aqui
+        }
     </script>
-</body>
+
+    <footer class="footer">
+        <div class="footer-info">
+            <div class="info-item">
+                <h3>📍 Localização</h3>
+                <p>Praça Delmiro Gouveia, nº 93 - Centro, Delmiro Gouveia</p>
+            </div>
+            <div class="info-item">
+                <h3>📞 Contato</h3>
+                <p>(79) 98116-4388</p>
+            </div>
+            <div class="info-item">
+                <h3>🌐 Redes Sociais</h3>
+                <p>
+                    <a href="https://instagram.com/centromedico" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"
+                            class="social-icon">
+                        Instagram
+                    </a><br>
+                    <a href="https://facebook.com/centromedico" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook"
+                            class="social-icon">
+                        Facebook
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        <div class="footer-map">
+            <iframe
+                src="https://www.google.com/maps?q=Praça+Delmiro+Gouveia,+93,+Centro,+Delmiro+Gouveia,+AL&output=embed"
+                width="100%" height="180" style="border:0; border-radius: 8px; margin-top: 1.5rem;" allowfullscreen=""
+                loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+
+        <!-- Link da Política de Privacidade -->
+        <div class="footer-links">
+            <a href="telaprivacidade.html" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>
+        </div>
+    </footer>
 
 </html>
