@@ -6,15 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vitalle Centro Médico</title>
     <link rel="icon" type="image/png" href="img/logo navegador.png" />
-
     <link rel="stylesheet" href="style.css" />
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" /> -->
-    <!-- outros links... -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-
 
 <body>
     <header class="header">
@@ -23,109 +18,122 @@
         <p class="slogan">Cuidando da sua saúde com carinho 💙</p>
     </header>
 
-    <!-- Coloque antes do conteúdo principal -->
     <div class="onda-topo"></div>
 
-
     <main class="container">
-        <section class="fale-conosco">
-            <a href="https://wa.me/5579981164388?text=Olá! Gostaria de mais informações sobre os atendimentos."
-                class="link-button destaque" target="_blank" rel="noopener noreferrer">
-                <strong>Fale Conosco</strong>
-            </a>
+        <section class="fale-conosco" id="faleConoscoBtn">
+            <!-- Botão será gerado pelo JS -->
         </section>
 
         <!-- ESPECIALIDADES -->
         <div class="card">
-            <button class="card-header" onclick="toggleCard('cardEspecialidades')"> Especialidades Médicas</button>
+            <button class="card-header" onclick="toggleCard('cardEspecialidades')">
+                Especialidades Médicas
+            </button>
             <div class="card-body" id="cardEspecialidades"></div>
-
         </div>
 
         <!-- ATENDIMENTOS -->
         <div class="card">
-            <button class="card-header" onclick="toggleCard('cardAtendimentos')"> Atendimentos</button>
+            <button class="card-header" onclick="toggleCard('cardAtendimentos')">
+                Atendimentos
+            </button>
             <div class="card-body" id="cardAtendimentos"></div>
         </div>
 
         <!-- EXAMES -->
         <div class="card">
-            <button class="card-header" onclick="toggleCard('cardExames')"> Exames</button>
+            <button class="card-header" onclick="toggleCard('cardExames')">
+                Exames
+            </button>
             <div class="card-body" id="cardExames"></div>
         </div>
 
         <!-- TERAPIA HOLÍSTICA INTEGRATIVA -->
         <div class="card">
-            <button class="card-header" onclick="toggleCard('cardTerapias')"> Terapia Holística
-                Integrativa</button>
+            <button class="card-header" onclick="toggleCard('cardTerapias')">
+                Terapia Holística Integrativa
+            </button>
             <div class="card-body" id="cardTerapias"></div>
         </div>
-
     </main>
 
     <script>
-        // Especialidades Médicas
+        const telefoneWhatsApp = "5582996316976"; // formato internacional correto
+
         const especialidades = [
-            { id: 'neuro', nome: 'Neurologia', medico: 'Dr Leandro Araújo', emoji: '' },
-            { id: 'clinico', nome: 'Clínico Geral', medico: 'Dr Leandro Araújo / Dr Robson Xisto', emoji: '' },
-            { id: 'cardio', nome: 'Cardiologista', medico: 'Dr Robson Xisto', emoji: '' },
-            { id: 'uro', nome: 'Urologista', medico: 'Dr Jaime Bonfim', emoji: '' },
-            { id: 'ortopedista', nome: 'Ortopedista', medico: 'Dr Cláudio Soares', emoji: '' },
-            { id: 'ortopedia', nome: 'Atendimento em Ortopedia', medico: 'Dr Breno Gomes', emoji: '' },
-            { id: 'psiquiatria', nome: 'Atendimento em Psiquiatria', medico: 'Dr Bruno Suzart', emoji: '' },
-            { id: 'gineco', nome: 'Ginecologista Obstétrica', medico: 'Dra Mônica Ricardo', emoji: '' },
-            { id: 'dermato', nome: 'Dermatologista', medico: 'Dra Diana Brandão', emoji: '' },
-            { id: 'gastro', nome: 'Gastroenterologia', medico: 'Dra Manuela Lisboa', emoji: '' },
-            { id: 'cirurgiaodonto', nome: 'Cirurgião Dentista', medico: 'Dr Gyovanni Brito', emoji: '' },
-            { id: 'ortodontista', nome: 'Ortodontista', medico: 'Dr Gyovanni Brito', emoji: '' },
-            { id: 'implanto', nome: 'Implantodontista', medico: 'Dr Jacson Costa', emoji: '' },
-            { id: 'odonto', nome: 'Odontopediatra', medico: 'Dra Edivânia Oliveira', emoji: '' },
+            { id: 'neuro', nome: 'Neurologia', medico: 'Dr Leandro Araújo' },
+            { id: 'clinico', nome: 'Clínico Geral', medico: 'Dr Leandro Araújo / Dr Robson Xisto' },
+            { id: 'cardio', nome: 'Cardiologista', medico: 'Dr Robson Xisto' },
+            { id: 'uro', nome: 'Urologista', medico: 'Dr Jaime Bonfim' },
+            { id: 'ortopedista', nome: 'Ortopedista', medico: 'Dr Cláudio Soares' },
+            { id: 'ortopedia', nome: 'Atendimento em Ortopedia', medico: 'Dr Breno Gomes' },
+            { id: 'psiquiatria', nome: 'Atendimento em Psiquiatria', medico: 'Dr Bruno Suzart' },
+            { id: 'gineco', nome: 'Ginecologista Obstétrica', medico: 'Dra Mônica Ricardo' },
+            { id: 'dermato', nome: 'Dermatologista', medico: 'Dra Diana Brandão' },
+            { id: 'gastro', nome: 'Gastroenterologia', medico: 'Dra Manuela Lisboa' },
+            { id: 'cirurgiaodonto', nome: 'Cirurgião Dentista', medico: 'Dr Gyovanni Brito' },
+            { id: 'ortodontista', nome: 'Ortodontista', medico: 'Dr Gyovanni Brito' },
+            { id: 'implanto', nome: 'Implantodontista', medico: 'Dr Jacson Costa' },
+            { id: 'odonto', nome: 'Odontopediatra', medico: 'Dra Edivânia Oliveira' },
         ];
 
-        // Atendimentos
         const atendimentos = [
-            { id: 'nutri', nome: 'Nutricionista', medico: 'Maria Laisa Oliveira', emoji: '' },
-            { id: 'nutriinfantil', nome: 'Nutricionista Infantil', medico: 'Lara Evelin Nascimento', emoji: '' },
-            { id: 'psicopedagoga', nome: 'Psicopedagoga', medico: 'Aline Dias', emoji: '' },
-            { id: 'neuropsico', nome: 'Neuro Psicopedagoga', medico: 'Quitéria Lopes', emoji: '' },
-            { id: 'psicologo', nome: 'Psicólogo', medico: 'Jucyellen Lima', emoji: '' },
-            { id: 'neuropsicologa', nome: 'Neuropsicóloga', medico: 'Milene Cicigliano', emoji: '' },
-            { id: 'fisio', nome: 'Fisioterapia', medico: 'Fabiana Monteiro', emoji: '' },
+            { id: 'nutri', nome: 'Nutricionista', medico: 'Maria Laisa Oliveira' },
+            { id: 'nutriinfantil', nome: 'Nutricionista Infantil', medico: 'Lara Evelin Nascimento' },
+            { id: 'psicopedagoga', nome: 'Psicopedagoga', medico: 'Aline Dias' },
+            { id: 'neuropsico', nome: 'Neuro Psicopedagoga', medico: 'Quitéria Lopes' },
+            { id: 'psicologo', nome: 'Psicólogo', medico: 'Jucyellen Lima' },
+            { id: 'neuropsicologa', nome: 'Neuropsicóloga', medico: 'Milene Cicigliano' },
+            { id: 'fisio', nome: 'Fisioterapia', medico: 'Fabiana Monteiro' },
         ];
 
-        // Exames
         const exames = [
-            { id: 'mapa', nome: 'MAPA', emoji: '' },
-            { id: 'holter', nome: 'Holter de 24 horas', emoji: '' },
-            { id: 'eletro', nome: 'Eletrocardiograma', emoji: '' },
-            { id: 'eco', nome: 'Ecocardiograma', emoji: '' },
-            { id: 'endoscopia', nome: 'Endoscopia', emoji: '' },
-            { id: 'laboratorio', nome: 'Laboratório', emoji: '' },
-            { id: 'ultra', nome: 'Ultrassonografia', emoji: '' },
+            { id: 'mapa', nome: 'MAPA' },
+            { id: 'holter', nome: 'Holter de 24 horas' },
+            { id: 'eletro', nome: 'Eletrocardiograma' },
+            { id: 'eco', nome: 'Ecocardiograma' },
+            { id: 'endoscopia', nome: 'Endoscopia' },
+            { id: 'laboratorio', nome: 'Laboratório' },
+            { id: 'ultra', nome: 'Ultrassonografia' },
         ];
 
-        // Terapias
         const terapias = [
-
-            { id: 'massagem', nome: 'Massagem', medico: 'Ísis Rosa', emoji: '' },
-            { id: 'drenagem-linfatica', nome: 'Drenagem Linfática', medico: 'Ísis Rosa', emoji: '' },
-            { id: 'gesso-terapia', nome: 'Drenagem com Gesso Terapia', medico: 'Ísis Rosa', emoji: '' },
+            { id: 'massagem', nome: 'Massagem', medico: 'Ísis Rosa' },
+            { id: 'drenagem-linfatica', nome: 'Drenagem Linfática', medico: 'Ísis Rosa' },
+            { id: 'gesso-terapia', nome: 'Drenagem com Gesso Terapia', medico: 'Ísis Rosa' },
         ];
 
+        function criarBotaoFaleConosco() {
+            const msg = "Olá! Gostaria de mais informações sobre os atendimentos.";
+            const msgCodificada = encodeURIComponent(msg); // 🔹 CORRIGIDO: sem replace de espaço
+            const link = `https://wa.me/${telefoneWhatsApp}?text=${msgCodificada}`;
 
+            document.getElementById("faleConoscoBtn").innerHTML = `
+        <a href="${link}"
+           class="link-button destaque" target="_blank" rel="noopener noreferrer">
+           <strong>Fale Conosco</strong>
+        </a>
+    `;
+        }
 
         function renderCards(lista, containerId) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
             lista.forEach(e => {
+                const mensagem = `Olá! Quero agendar uma consulta com ${e.medico || 'profissional'} (${e.nome}).`;
+                const mensagemCodificada = encodeURIComponent(mensagem); // 🔹 CORRIGIDO
+                const link = `https://wa.me/${telefoneWhatsApp}?text=${mensagemCodificada}`;
+
                 container.innerHTML += `
 <div class="card">
-  <button class="card-header" onclick="toggleUnique('${e.id}', '${containerId}')">${e.emoji} <strong>${e.nome}</strong></button>
+  <button class="card-header" onclick="toggleUnique('${e.id}', '${containerId}')">
+    ${e.emoji || ''} <strong>${e.nome}</strong>
+  </button>
   <div class="card-body subcard" id="${e.id}">
     ${e.medico ? `<p>${e.medico}</p>` : ''}
     <a class="link-button" style="margin-top: 0.8rem; background: #25d366; color: white; border: none;"
-      href="https://wa.me/5579981164388?text=Olá! Gostaria de agendar ${e.medico ? `com ${e.medico}` : ''} (${e.nome})"
-      target="_blank" rel="noopener noreferrer">
+      href="${link}" target="_blank" rel="noopener noreferrer">
       Agendar via WhatsApp
     </a>
   </div>
@@ -135,11 +143,7 @@
 
         function toggleCard(id) {
             document.querySelectorAll('.card-body').forEach(div => {
-                if (div.id === id) {
-                    div.classList.toggle('active');
-                } else {
-                    div.classList.remove('active');
-                }
+                div.id === id ? div.classList.toggle('active') : div.classList.remove('active');
             });
         }
 
@@ -147,15 +151,15 @@
             document.querySelectorAll(`#${containerId} .subcard`).forEach(c => {
                 if (c.id !== id) c.classList.remove('active');
             });
-            const el = document.getElementById(id);
-            el.classList.toggle('active');
+            document.getElementById(id).classList.toggle('active');
         }
 
         window.onload = () => {
+            criarBotaoFaleConosco();
             renderCards(especialidades, 'cardEspecialidades');
             renderCards(atendimentos, 'cardAtendimentos');
             renderCards(exames, 'cardExames');
-            renderCards(terapias, 'cardTerapias'); // <--- adicionado aqui
+            renderCards(terapias, 'cardTerapias');
         }
     </script>
 
@@ -167,12 +171,13 @@
             </div>
             <div class="info-item">
                 <h3>📞 Contato</h3>
-                <p>(79) 98116-4388</p>
+                <p>(82) 99631-6976</p>
             </div>
             <div class="info-item">
                 <h3>🌐 Redes Sociais</h3>
                 <p>
-                    <a href="https://instagram.com/centromedico" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.instagram.com/centromedicovitalle?igsh=ZnRnZHZ1ODRrbGli&utm_source=qr"
+                        target="_blank" rel="noopener noreferrer">
                         <img src="https://cdn-icons-png.flaticon.com/512/1384/1384063.png" alt="Instagram"
                             class="social-icon">
                         Instagram
@@ -194,10 +199,10 @@
             </iframe>
         </div>
 
-        <!-- Link da Política de Privacidade -->
         <div class="footer-links">
             <a href="telaprivacidade.html" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>
         </div>
     </footer>
+</body>
 
 </html>
