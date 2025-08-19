@@ -27,7 +27,7 @@ const atendimentos = [
     { id: 'psicologo', nome: 'Psicólogo', medico: 'Jucyellen Lima' },
     { id: 'neuropsicologa', nome: 'Neuropsicóloga', medico: 'Milene Cicigliano' },
     { id: 'fisio', nome: 'Fisioterapia', medico: 'Fabiana Monteiro' },
-    { id: 'fono', nome: 'Fonoaudióloga', medico: 'Dra. Ana Paula' },
+    { id: 'fono', nome: 'Fonoaudióloga', medico: 'Alice Barboza' },
 ];
 
 const exames = [
