@@ -40,6 +40,8 @@ const exames = [
     { id: 'ultra', nome: 'Ultrassonografia' },
     { id: 'colonoscopia', nome: 'Colonoscopia' },
     { id: 'retossigmoidoscopia', nome: 'Retossigmoidoscopia' },
+    { id: 'mamografia', nome: 'Mamografia' },
+    { id: 'raio-x', nome: 'Raio X' },
 ];
 
 const terapias = [
