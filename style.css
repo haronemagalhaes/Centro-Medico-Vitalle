@@ -694,3 +694,19 @@ img {
     }
 
 }
+.fc-credit {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-top: 8px;
+}
+
+.fc-credit a {
+  color: #6fb8e5;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.fc-credit a:hover {
+  text-decoration: underline;
+}
