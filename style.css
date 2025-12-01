@@ -36,14 +36,6 @@ body {
     margin-bottom: 2rem;
 }
 
-.logo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 
 h1 {
     font-size: 1.5rem;
@@ -406,11 +398,14 @@ img {
 }
 
 .logo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    width: 220px; /* ajuste como quiser */
+    height: auto; /* mantém proporção natural */
+    border-radius: 0; /* remove a bolinha */
+    box-shadow: none; /* opcional: remove sombra */
+    object-fit: contain; /* deixa a logo natural */
+    background: transparent; /* garante sem fundo */
 }
+
 
 .header {
     display: flex;
@@ -709,4 +704,246 @@ img {
 
 .fc-credit a:hover {
   text-decoration: underline;
+}
+/* ===========================
+   BLOCO MÉDICOS / AVATAR
+=========================== */
+
+.card-body-top {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;      /* quadradinho com cantos levemente arredondados */
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.card-body-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-medico-nome {
+  font-weight: 600;
+  color: #1c1c1c;
+}
+
+.card-medico-crm {
+  font-size: 0.85rem;
+  color: #707070;
+}
+
+/* Médicos dentro do card aberto */
+.doctor-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.doctor-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;      /* quadradinho com cantos suaves */
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.doctor-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+}
+
+.doctor-name {
+  font-weight: 600;
+  color: #222;
+}
+
+.doctor-crm {
+  font-size: 0.78rem;
+  color: #555;
+}
+
+/* ===========================
+   BOTÃO VIDRO WHATSAPP
+=========================== */
+
+.whats-main-btn {
+  width: 100%;
+  margin-top: 0.8rem;
+  padding: 0.95rem 1.2rem;
+
+  border-radius: 18px;
+  border: 2px solid rgba(37, 211, 102, 0.35);
+
+  background: rgba(255, 255, 255, 0.25);      /* efeito vidro */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  color: #1f8f49;
+  font-weight: 600;
+  font-size: 1rem;
+
+  cursor: pointer;
+  box-shadow: 0 6px 25px rgba(37, 211, 102, 0.15);
+
+  transition: all 0.25s ease;
+}
+
+.whats-main-btn:hover {
+  background: #25d366;
+  color: #fff;
+  border-color: #25d366;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+  transform: translateY(-2px);
+}
+
+.whats-main-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 5px 18px rgba(37, 211, 102, 0.25);
+  opacity: 0.95;
+}
+
+/* Versão menor (Clínico Geral) */
+.whats-main-btn--secondary {
+  width: auto;
+  margin-top: 0.3rem;
+  padding: 0.6rem 1rem;
+
+  font-size: 0.85rem;
+
+  background: rgba(255, 255, 255, 0.2);
+  color: #1f8f49;
+
+  border-radius: 14px;
+  border: 2px solid rgba(37, 211, 102, 0.35);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.1);
+  transition: all 0.25s ease;
+}
+
+.whats-main-btn--secondary:hover {
+  background: #25d366;
+  color: #fff;
+  border-color: #25d366;
+  transform: translateY(-2px);
+}
+
+/* Conteúdo dos médicos alinhado à esquerda */
+.card-body--doctors {
+  text-align: left !important;
+  display: block !important;
+}
+
+/* ===========================
+   CARD ESTILO SHADCN
+=========================== */
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;                 /* border-gray-200 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);   /* shadow-sm */
+  overflow: hidden;
+  margin: 1.25rem 0;
+  border-left: 4px solid #00d4d4;            /* detalhe turquesa */
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);   /* shadow-md */
+  transform: translateY(-2px);
+}
+
+.card-header {
+  background: #ffffff;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-weight: 600;
+  color: #111827;
+  font-size: 1rem;
+  transition: background .2s ease;
+}
+
+.card-header:hover {
+  background: #f9fafb;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.card-chevron {
+  font-size: 1.15rem;
+  color: #6b7280;
+  transition: transform .2s ease, color .2s ease;
+}
+
+.card-header[aria-expanded="true"] .card-chevron {
+  transform: rotate(90deg);
+  color: #00b6b6;
+}
+
+.card-body {
+  padding: 0 1.25rem;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: max-height .35s ease, opacity .3s ease, padding .3s ease;
+}
+
+.card-body.expanded {
+  max-height: 900px;
+  opacity: 1;
+  padding: 1.25rem;
+  pointer-events: auto;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ===========================
+   REDUÇÃO DO ESPAÇO SUPERIOR
+=========================== */
+
+body {
+  padding-top: 1rem !important;   /* antes 2rem */
+}
+
+.header {
+  margin-bottom: 1rem !important; /* antes 2rem */
+  margin-top: -0.5rem;
+}
+
+.logo {
+  margin-bottom: 0.5rem !important;
+  margin-top: -0.5rem;
+}
+
+.header h1,
+#clinicName {
+  margin-top: 0.4rem !important;
+  margin-bottom: 0.1rem !important;
+}
+
+.slogan {
+  margin-top: 0.1rem !important;
+  margin-bottom: 1rem !important;
 }

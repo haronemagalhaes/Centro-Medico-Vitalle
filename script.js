@@ -1,6 +1,7 @@
 // ===== Config =====
 const telefoneWhatsApp = "5582996316976";
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbyiEI3R0mw7PrutWfGikiTTE2sg4kEtQvse24fqMfTfOcBUjY4On3DX6LrxkmjOClo/exec";
+const SHEET_API_URL =
+  "https://script.google.com/macros/s/AKfycbyiEI3R0mw7PrutWfGikiTTE2sg4kEtQvse24fqMfTfOcBUjY4On3DX6LrxkmjOClo/exec";
 
 // ===== Dados vindos do Sheets (inicialmente vazios) =====
 let especialidades = [];
@@ -20,9 +21,9 @@ async function carregarDadosDoSheets() {
 
     // Separa por grupo, de acordo com a coluna "grupo" da planilha
     especialidades = todos.filter((i) => i.grupo === "especialidades");
-    atendimentos   = todos.filter((i) => i.grupo === "atendimentos");
-    exames         = todos.filter((i) => i.grupo === "exames");
-    terapias       = todos.filter((i) => i.grupo === "terapias");
+    atendimentos = todos.filter((i) => i.grupo === "atendimentos");
+    exames = todos.filter((i) => i.grupo === "exames");
+    terapias = todos.filter((i) => i.grupo === "terapias");
 
     console.log("Dados carregados do Sheets:", {
       especialidades,
@@ -74,34 +75,159 @@ function criarBotaoFaleConosco() {
 }
 
 /**
- * Renderiza cards com seta sempre visível (›) e rotação ao expandir.
- * Usa aria-expanded para acessibilidade.
+ * Renderiza cards por especialidade.
+ *
+ * Cada linha da planilha é 1 médico.
+ * Se tiver mais de um médico com o mesmo "nome" (ex.: "Clínico Geral"),
+ * eles aparecem TODOS dentro do mesmo card.
  */
 function renderCards(lista, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  const partes = lista.map((e) => {
-    const mensagem = `Quero agendar uma consulta com ${
-      e.medico || "profissional"
-    } (${e.nome}).`;
-    const mensagemEscapada = mensagem.replace(/'/g, "\\'");
+  // Agrupa itens por nome da especialidade
+  const porEspecialidade = {};
+  lista.forEach((item) => {
+    const key = item.nome || "";
+    if (!key) return;
+    if (!porEspecialidade[key]) {
+      porEspecialidade[key] = [];
+    }
+    porEspecialidade[key].push(item);
+  });
+
+  const partes = Object.entries(porEspecialidade).map(([nome, medicos]) => {
+    const base = medicos[0] || {};
+    const idBase =
+      base.id || nome.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
+
+    const grupo = base.grupo || "";
+    const isClinicoGeral = nome.toLowerCase().includes("clinico");
+
+    // ===== LISTA DE MÉDICOS (foto + nome + CRM/CRP) =====
+    let medicoListaHtml = "";
+
+    // Para EXAMES não mostramos bloco de profissional
+    if (grupo !== "exames") {
+      // Atendimentos usam CRP, demais usam CRM
+      const docLabel = grupo === "atendimentos" ? "CRP" : "CRM";
+
+      medicoListaHtml = medicos
+        .map((m) => {
+          const fotoHtml = m.fotoUrl
+            ? `
+              <img
+                src="${m.fotoUrl}"
+                alt="Foto de ${m.medico || nome || "profissional"}"
+                class="doctor-avatar"
+                loading="lazy"
+              />
+            `
+            : "";
+
+          const nomeMedico = m.medico || "";
+       const crmHtml = m.crm
+  ? `<span class="doctor-crm">${m.crm}</span>`
+  : "";
+
+
+          // Se não tiver nada pra mostrar, pula
+          if (!fotoHtml && !nomeMedico && !crmHtml) return "";
+
+          if (isClinicoGeral) {
+            // Para Clínico Geral: botão individual por médico (mais organizado)
+            const msgMed = `Quero agendar uma consulta com ${
+              m.medico || "o(a) médico(a)"
+            } (${nome}).`;
+            const msgMedEscapada = msgMed.replace(/'/g, "\\'");
+
+            return `
+              <div class="doctor-row doctor-row--with-button">
+                ${fotoHtml}
+                <div class="doctor-info">
+                  ${
+                    nomeMedico
+                      ? `<span class="doctor-name">${nomeMedico}</span>`
+                      : ""
+                  }
+                  ${crmHtml}
+                  <button
+                    type="button"
+                    class="whats-main-btn whats-main-btn--secondary"
+                    onclick="abrirWhatsApp('${msgMedEscapada}'); return false;"
+                  >
+                    <span class="whats-main-btn-label">
+                      Agendar com ${nomeMedico || "profissional"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            `;
+          }
+
+          return `
+            <div class="doctor-row">
+              ${fotoHtml}
+              <div class="doctor-info">
+                ${
+                  nomeMedico
+                    ? `<span class="doctor-name">${nomeMedico}</span>`
+                    : ""
+                }
+                ${crmHtml}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    
+    let mensagemPadrao;
+    if (grupo === "exames") {
+      mensagemPadrao = `Quero agendar o exame ${nome}.`;
+    } else {
+      mensagemPadrao = `Quero agendar uma consulta em ${nome}.`;
+    }
+
+    if (!isClinicoGeral && medicos.length === 1 && medicos[0].medico) {
+      const unico = medicos[0].medico;
+      if (grupo === "exames") {
+        mensagemPadrao = `Quero agendar o exame ${nome} com ${unico}.`;
+      } else {
+        mensagemPadrao = `Quero agendar uma consulta com ${unico} (${nome}).`;
+      }
+    }
+    const mensagemEscapada = mensagemPadrao.replace(/'/g, "\\'");
+
+    let botaoAgendarHtml = "";
+
+    if (!isClinicoGeral) {
+      botaoAgendarHtml = `
+        <button
+          type="button"
+          class="whats-main-btn"
+          onclick="abrirWhatsApp('${mensagemEscapada}'); return false;"
+        >
+          <span class="whats-main-btn-label">Agendar via WhatsApp</span>
+        </button>
+      `;
+    }
+
     return `
       <div class="card">
-        <button id="hdr-${e.id}" class="card-header" aria-expanded="false"
-                onclick="toggleUniqueSmooth('${e.id}', '${containerId}')">
-          <span class="card-title">${e.emoji || ""} <strong>${e.nome}</strong></span>
-          <span id="chev-${e.id}" class="card-chevron" aria-hidden="true">›</span>
+        <button id="hdr-${idBase}" class="card-header" aria-expanded="false"
+                onclick="toggleUniqueSmooth('${idBase}', '${containerId}')">
+          <span class="card-title">
+            ${base.emoji || ""} <strong>${nome}</strong>
+          </span>
+          <span id="chev-${idBase}" class="card-chevron" aria-hidden="true">›</span>
         </button>
 
-        <div class="card-body subcard" id="${e.id}">
-          ${e.medico ? `<p>${e.medico}</p>` : ""}
-          <a class="link-button" style="margin-top:0.8rem;background:#25d366;color:#fff;border:none;"
-             href="#"
-             onclick="abrirWhatsApp('${mensagemEscapada}'); return false;"
-             rel="noopener noreferrer">
-            Agendar via WhatsApp
-          </a>
+      <div class="card-body subcard card-body--doctors" id="${idBase}">
+
+          ${medicoListaHtml}
+          ${botaoAgendarHtml}
         </div>
       </div>
     `;
@@ -159,7 +285,7 @@ function toggleUniqueSmooth(id, containerId) {
   }
 }
 
-/* ===== Grupos (layout antigo): abre/fecha cada bloco principal ===== */
+/* ===== Grupos (abre/fecha cada bloco principal) ===== */
 const GROUP_IDS = [
   "cardEspecialidades",
   "cardAtendimentos",
@@ -195,7 +321,7 @@ function toggleCard(bodyId) {
   body.classList.toggle("expanded", willExpand);
 }
 
-/* ===== Troca suave entre painéis ===== */
+/* ===== Troca suave entre painéis (se tiver abas) ===== */
 function switchPanel(panelId) {
   const next = document.getElementById(panelId);
   if (!next) return;
@@ -248,7 +374,7 @@ function bindTopBtn() {
   }
 }
 
-/* ===== Mapa sob demanda ===== */
+/* ===== Mapa sob demanda (se usar) ===== */
 function carregarMapa() {
   const wrap = document.getElementById("mapWrap");
   if (!wrap || wrap.dataset.loaded) return;
