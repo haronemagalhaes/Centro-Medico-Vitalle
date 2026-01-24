@@ -1,15 +1,15 @@
-// ===== Config =====
+
 const telefoneWhatsApp = "5582996316976";
 const SHEET_API_URL =
   "https://script.google.com/macros/s/AKfycbyiEI3R0mw7PrutWfGikiTTE2sg4kEtQvse24fqMfTfOcBUjY4On3DX6LrxkmjOClo/exec";
 
-// ===== Dados vindos do Sheets (inicialmente vazios) =====
+
 let especialidades = [];
 let atendimentos = [];
 let exames = [];
 let terapias = [];
 
-// Busca dados do Google Sheets (Apps Script)
+
 async function carregarDadosDoSheets() {
   try {
     const resp = await fetch(SHEET_API_URL);
@@ -19,7 +19,7 @@ async function carregarDadosDoSheets() {
 
     const todos = await resp.json();
 
-    // Separa por grupo, de acordo com a coluna "grupo" da planilha
+  
     especialidades = todos.filter((i) => i.grupo === "especialidades");
     atendimentos = todos.filter((i) => i.grupo === "atendimentos");
     exames = todos.filter((i) => i.grupo === "exames");
@@ -33,11 +33,10 @@ async function carregarDadosDoSheets() {
     });
   } catch (err) {
     console.error("Falha ao carregar dados do Google Sheets:", err);
-    // Se quiser, aqui você pode mostrar uma mensagem na tela pro usuário
+
   }
 }
 
-/* ===== Saudações dinâmicas (horário de Brasília) ===== */
 function _nowInBrasilia() {
   return new Date(
     new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
@@ -58,7 +57,6 @@ function abrirWhatsApp(msgBody) {
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
-// ===== Utilidades de UI =====
 function criarBotaoFaleConosco() {
   const alvo = document.getElementById("faleConoscoBtn");
   if (!alvo) return;
@@ -74,18 +72,11 @@ function criarBotaoFaleConosco() {
   `;
 }
 
-/**
- * Renderiza cards por especialidade.
- *
- * Cada linha da planilha é 1 médico.
- * Se tiver mais de um médico com o mesmo "nome" (ex.: "Clínico Geral"),
- * eles aparecem TODOS dentro do mesmo card.
- */
+
 function renderCards(lista, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  // Agrupa itens por nome da especialidade
   const porEspecialidade = {};
   lista.forEach((item) => {
     const key = item.nome || "";
@@ -104,12 +95,9 @@ function renderCards(lista, containerId) {
     const grupo = base.grupo || "";
     const isClinicoGeral = nome.toLowerCase().includes("clinico");
 
-    // ===== LISTA DE MÉDICOS (foto + nome + CRM/CRP) =====
     let medicoListaHtml = "";
 
-    // Para EXAMES não mostramos bloco de profissional
     if (grupo !== "exames") {
-      // Atendimentos usam CRP, demais usam CRM
       const docLabel = grupo === "atendimentos" ? "CRP" : "CRM";
 
       medicoListaHtml = medicos
@@ -131,11 +119,10 @@ function renderCards(lista, containerId) {
   : "";
 
 
-          // Se não tiver nada pra mostrar, pula
+
           if (!fotoHtml && !nomeMedico && !crmHtml) return "";
 
           if (isClinicoGeral) {
-            // Para Clínico Geral: botão individual por médico (mais organizado)
             const msgMed = `Quero agendar uma consulta com ${
               m.medico || "o(a) médico(a)"
             } (${nome}).`;
@@ -236,7 +223,6 @@ function renderCards(lista, containerId) {
   container.innerHTML = partes.join("");
 }
 
-/* ===== Acordeão interno com transição suave (fecha -> abre) ===== */
 function toggleUniqueSmooth(id, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -285,7 +271,6 @@ function toggleUniqueSmooth(id, containerId) {
   }
 }
 
-/* ===== Grupos (abre/fecha cada bloco principal) ===== */
 const GROUP_IDS = [
   "cardEspecialidades",
   "cardAtendimentos",
@@ -321,7 +306,6 @@ function toggleCard(bodyId) {
   body.classList.toggle("expanded", willExpand);
 }
 
-/* ===== Troca suave entre painéis (se tiver abas) ===== */
 function switchPanel(panelId) {
   const next = document.getElementById(panelId);
   if (!next) return;
@@ -354,7 +338,6 @@ function showGrupo(tipo) {
   switchPanel(map[tipo]);
 }
 
-/* ===== Botões "em breve" ===== */
 document.addEventListener("click", (event) => {
   const el = event.target.closest(".link-button.em-breve");
   if (!el) return;
@@ -362,7 +345,6 @@ document.addEventListener("click", (event) => {
   alert("Em breve essa função será ativada!");
 });
 
-/* ===== Voltar ao topo ===== */
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -374,7 +356,6 @@ function bindTopBtn() {
   }
 }
 
-/* ===== Mapa sob demanda (se usar) ===== */
 function carregarMapa() {
   const wrap = document.getElementById("mapWrap");
   if (!wrap || wrap.dataset.loaded) return;
@@ -415,17 +396,15 @@ function prepararMapaSobDemanda() {
   }
 }
 
-/* ========= BOOTSTRAP ÚNICO (idempotente) ========= */
 async function bootstrap(force = false) {
   if (!force && document.body.dataset.bootstrapped === "1") return;
   document.body.dataset.bootstrapped = "1";
 
   criarBotaoFaleConosco();
 
-  // 1) Carrega do Google Sheets
+  
   await carregarDadosDoSheets();
 
-  // 2) Renderiza com os dados vindos da planilha
   const sets = [
     ["cardEspecialidades", especialidades],
     ["cardAtendimentos", atendimentos],
@@ -442,7 +421,6 @@ async function bootstrap(force = false) {
   prepararMapaSobDemanda();
 }
 
-/* ===== Inicialização ===== */
 document.addEventListener("DOMContentLoaded", () => {
   bootstrap();
   startTypewriter();
@@ -455,7 +433,6 @@ window.addEventListener("pageshow", (e) => {
   }
 });
 
-/* ===== Efeito de digitação ===== */
 const TYPEWRITER = {
   enabled: true,
   speedMs: 80,
