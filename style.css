@@ -850,41 +850,6 @@ body {
   padding-top: 1rem !important;
 }
 
-.planos-grid {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  gap: 8px;
-  align-items: center;
-  justify-content: start;
-}
-
-.plano-card {
-  width: 54px;
-  height: 54px;
-  border: 1px solid #eef2f7;
-  border-radius: 10px;
-  background: #fff;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  box-shadow: none;
-}
-
-.plano-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 8px;
-  opacity: 0.9;
-  filter: saturate(0.9);
-}
-
-.plano-card:hover {
-  border-color: #e5e7eb;
-}
-.plano-card:hover .plano-img {
-  opacity: 1;
-}
 
 .header h1,
 #clinicName {
@@ -892,4 +857,52 @@ body {
 }
 .slogan {
   margin-top: 0 !important;
+}
+.plano-card{
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;
+  background: transparent; 
+  display: grid;
+  place-items: center;
+}
+
+.plano-img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   
+  padding: 0;            
+  display: block;
+  background: transparent;
+}
+.planos-grid{
+  display: flex;        
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;        
+  justify-content: center;   
+  overflow-x: auto;           
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+
+.plano-card{
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: transparent;   
+  border: 0;                
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;            
+}
+
+.plano-img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;       
+  display: block;
 }
