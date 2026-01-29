@@ -64,16 +64,23 @@ async function abrirWhatsApp(msgBody) {
   const saudacao = getSaudacaoBrasilia();
   const fullMsg = `${saudacao}! ${msgBody}`;
 
+  let tel = telefonesWhatsApp[0]; // fallback
+
   try {
-    const telefone = await proximoTelefoneWhatsGlobal(); // ✅ rodízio GLOBAL
-    const url = `https://wa.me/${telefone}?text=${encodeURIComponent(fullMsg)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    const telefone = await proximoTelefoneWhatsGlobal();
+    if (telefone) tel = telefone;
   } catch (err) {
     console.error("Falha no rodízio global, usando fallback:", err);
-    const url = `https://wa.me/${telefonesWhatsApp[0]}?text=${encodeURIComponent(fullMsg)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
   }
+
+  const url = `https://wa.me/${tel}?text=${encodeURIComponent(fullMsg)}`;
+
+  // ✅ abre SEM bloqueio (na mesma aba)
+  window.location.href = url;
+
+  return false;
 }
+
 
 
 
