@@ -39,15 +39,13 @@ async function carregarDadosDoSheets() {
 
   }
 }
-
-function proximoTelefoneWhats() {
-  const key = "rodizio_whatsapp_idx";
-  const idx = parseInt(localStorage.getItem(key) || "0", 10);
-
-  const tel = telefonesWhatsApp[idx % telefonesWhatsApp.length];
-
-  localStorage.setItem(key, String((idx + 1) % telefonesWhatsApp.length));
-  return tel;
+async function proximoTelefoneWhatsGlobal() {
+  const resp = await fetch(`${SHEET_API_URL}?action=nextPhone`, {
+    cache: "no-store",
+  });
+  if (!resp.ok) throw new Error("Erro ao pegar telefone: " + resp.status);
+  const data = await resp.json();
+  return data.phone;
 }
 
 function _nowInBrasilia() {
@@ -61,14 +59,20 @@ function getSaudacaoBrasilia() {
   if (h >= 12 && h < 18) return "Boa tarde";
   return "Boa noite";
 }
-function abrirWhatsApp(msgBody) {
+
+async function abrirWhatsApp(msgBody) {
   const saudacao = getSaudacaoBrasilia();
   const fullMsg = `${saudacao}! ${msgBody}`;
-   const telefone = proximoTelefoneWhats(); // <-- aqui entra o rodízio
-  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(
-    fullMsg
-  )}`;
-  window.open(url, "_blank", "noopener,noreferrer");
+
+  try {
+    const telefone = await proximoTelefoneWhatsGlobal(); // ✅ rodízio GLOBAL
+    const url = `https://wa.me/${telefone}?text=${encodeURIComponent(fullMsg)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  } catch (err) {
+    console.error("Falha no rodízio global, usando fallback:", err);
+    const url = `https://wa.me/${telefonesWhatsApp[0]}?text=${encodeURIComponent(fullMsg)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
 }
 
 
