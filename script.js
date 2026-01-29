@@ -1,5 +1,8 @@
 
-const telefoneWhatsApp = "5582996316976";
+const telefonesWhatsApp = [
+  "5582996871245", // número novo
+  "5582996316976", // número antigo
+];
 const SHEET_API_URL =
   "https://script.google.com/macros/s/AKfycbyiEI3R0mw7PrutWfGikiTTE2sg4kEtQvse24fqMfTfOcBUjY4On3DX6LrxkmjOClo/exec";
 
@@ -37,6 +40,16 @@ async function carregarDadosDoSheets() {
   }
 }
 
+function proximoTelefoneWhats() {
+  const key = "rodizio_whatsapp_idx";
+  const idx = parseInt(localStorage.getItem(key) || "0", 10);
+
+  const tel = telefonesWhatsApp[idx % telefonesWhatsApp.length];
+
+  localStorage.setItem(key, String((idx + 1) % telefonesWhatsApp.length));
+  return tel;
+}
+
 function _nowInBrasilia() {
   return new Date(
     new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
@@ -51,11 +64,14 @@ function getSaudacaoBrasilia() {
 function abrirWhatsApp(msgBody) {
   const saudacao = getSaudacaoBrasilia();
   const fullMsg = `${saudacao}! ${msgBody}`;
-  const url = `https://wa.me/${telefoneWhatsApp}?text=${encodeURIComponent(
+   const telefone = proximoTelefoneWhats(); // <-- aqui entra o rodízio
+  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(
     fullMsg
   )}`;
   window.open(url, "_blank", "noopener,noreferrer");
 }
+
+
 
 function criarBotaoFaleConosco() {
   const alvo = document.getElementById("faleConoscoBtn");
