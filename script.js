@@ -1,93 +1,76 @@
+const telefoneWhatsAppConsultasETerapias = "5582996316976";
+const telefoneWhatsAppExames = "5582996871245";
 
-const telefonesWhatsApp = [
-  "5582996871245", // número novo
-  "5582996316976", // número antigo
-];
 const SHEET_API_URL =
   "https://script.google.com/macros/s/AKfycbyiEI3R0mw7PrutWfGikiTTE2sg4kEtQvse24fqMfTfOcBUjY4On3DX6LrxkmjOClo/exec";
-
 
 let especialidades = [];
 let atendimentos = [];
 let exames = [];
 let terapias = [];
 
-
-async function carregarDadosDoSheets() {
-  try {
-    const resp = await fetch(SHEET_API_URL);
-    if (!resp.ok) {
-      throw new Error("Erro HTTP ao buscar dados: " + resp.status);
-    }
-
-    const todos = await resp.json();
-
-  
-    especialidades = todos.filter((i) => i.grupo === "especialidades");
-    atendimentos = todos.filter((i) => i.grupo === "atendimentos");
-    exames = todos.filter((i) => i.grupo === "exames");
-    terapias = todos.filter((i) => i.grupo === "terapias");
-
-    console.log("Dados carregados do Sheets:", {
-      especialidades,
-      atendimentos,
-      exames,
-      terapias,
-    });
-  } catch (err) {
-    console.error("Falha ao carregar dados do Google Sheets:", err);
-
-  }
-}
-
-function proximoTelefoneWhats() {
-  const key = "rodizio_whatsapp_idx";
-  const idx = parseInt(localStorage.getItem(key) || "0", 10);
-
-  const tel = telefonesWhatsApp[idx % telefonesWhatsApp.length];
-
-  localStorage.setItem(key, String((idx + 1) % telefonesWhatsApp.length));
-  return tel;
-}
-
 function _nowInBrasilia() {
   return new Date(
     new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
   );
 }
+
 function getSaudacaoBrasilia() {
   const h = _nowInBrasilia().getHours();
   if (h >= 5 && h < 12) return "Bom dia";
   if (h >= 12 && h < 18) return "Boa tarde";
   return "Boa noite";
 }
-function abrirWhatsApp(msgBody) {
+
+function escapeForOnclick(str = "") {
+  return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
+function abrirWhatsApp(msgBody, grupo = "") {
   const saudacao = getSaudacaoBrasilia();
   const fullMsg = `${saudacao}! ${msgBody}`;
-   const telefone = proximoTelefoneWhats(); // <-- aqui entra o rodízio
-  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(
-    fullMsg
-  )}`;
+
+  const telefone =
+    grupo === "exames"
+      ? telefoneWhatsAppExames
+      : telefoneWhatsAppConsultasETerapias;
+
+  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(fullMsg)}`;
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
+async function carregarDadosDoSheets() {
+  try {
+    const resp = await fetch(SHEET_API_URL);
+    if (!resp.ok) throw new Error("Erro HTTP ao buscar dados: " + resp.status);
 
+    const todos = await resp.json();
+
+    especialidades = todos.filter((i) => i.grupo === "especialidades");
+    atendimentos = todos.filter((i) => i.grupo === "atendimentos");
+    exames = todos.filter((i) => i.grupo === "exames");
+    terapias = todos.filter((i) => i.grupo === "terapias");
+  } catch (err) {
+    console.error("Falha ao carregar dados do Google Sheets:", err);
+  }
+}
 
 function criarBotaoFaleConosco() {
   const alvo = document.getElementById("faleConoscoBtn");
   if (!alvo) return;
 
   const msgBody = "Gostaria de mais informações sobre os atendimentos.";
+  const msgEsc = escapeForOnclick(msgBody);
+
   alvo.innerHTML = `
     <a href="#"
        class="link-button destaque fale-cta only-text"
-       onclick="abrirWhatsApp('${msgBody.replace(/'/g, "\\'")}'); return false;"
+       onclick="abrirWhatsApp('${msgEsc}', 'atendimentos'); return false;"
        rel="noopener noreferrer" aria-label="Fale Conosco pelo WhatsApp">
       <strong class="label">Fale Conosco</strong>
     </a>
   `;
 }
-
 
 function renderCards(lista, containerId) {
   const container = document.getElementById(containerId);
@@ -97,9 +80,7 @@ function renderCards(lista, containerId) {
   lista.forEach((item) => {
     const key = item.nome || "";
     if (!key) return;
-    if (!porEspecialidade[key]) {
-      porEspecialidade[key] = [];
-    }
+    if (!porEspecialidade[key]) porEspecialidade[key] = [];
     porEspecialidade[key].push(item);
   });
 
@@ -114,8 +95,6 @@ function renderCards(lista, containerId) {
     let medicoListaHtml = "";
 
     if (grupo !== "exames") {
-      const docLabel = grupo === "atendimentos" ? "CRP" : "CRM";
-
       medicoListaHtml = medicos
         .map((m) => {
           const fotoHtml = m.fotoUrl
@@ -130,11 +109,7 @@ function renderCards(lista, containerId) {
             : "";
 
           const nomeMedico = m.medico || "";
-       const crmHtml = m.crm
-  ? `<span class="doctor-crm">${m.crm}</span>`
-  : "";
-
-
+          const crmHtml = m.crm ? `<span class="doctor-crm">${m.crm}</span>` : "";
 
           if (!fotoHtml && !nomeMedico && !crmHtml) return "";
 
@@ -142,22 +117,18 @@ function renderCards(lista, containerId) {
             const msgMed = `Quero agendar uma consulta com ${
               m.medico || "o(a) médico(a)"
             } (${nome}).`;
-            const msgMedEscapada = msgMed.replace(/'/g, "\\'");
+            const msgMedEscapada = escapeForOnclick(msgMed);
 
             return `
               <div class="doctor-row doctor-row--with-button">
                 ${fotoHtml}
                 <div class="doctor-info">
-                  ${
-                    nomeMedico
-                      ? `<span class="doctor-name">${nomeMedico}</span>`
-                      : ""
-                  }
+                  ${nomeMedico ? `<span class="doctor-name">${nomeMedico}</span>` : ""}
                   ${crmHtml}
                   <button
                     type="button"
                     class="whats-main-btn whats-main-btn--secondary"
-                    onclick="abrirWhatsApp('${msgMedEscapada}'); return false;"
+                    onclick="abrirWhatsApp('${msgMedEscapada}', '${grupo}'); return false;"
                   >
                     <span class="whats-main-btn-label">
                       Agendar com ${nomeMedico || "profissional"}
@@ -172,11 +143,7 @@ function renderCards(lista, containerId) {
             <div class="doctor-row">
               ${fotoHtml}
               <div class="doctor-info">
-                ${
-                  nomeMedico
-                    ? `<span class="doctor-name">${nomeMedico}</span>`
-                    : ""
-                }
+                ${nomeMedico ? `<span class="doctor-name">${nomeMedico}</span>` : ""}
                 ${crmHtml}
               </div>
             </div>
@@ -185,23 +152,20 @@ function renderCards(lista, containerId) {
         .join("");
     }
 
-    
-    let mensagemPadrao;
-    if (grupo === "exames") {
-      mensagemPadrao = `Quero agendar o exame ${nome}.`;
-    } else {
-      mensagemPadrao = `Quero agendar uma consulta em ${nome}.`;
-    }
+    let mensagemPadrao =
+      grupo === "exames"
+        ? `Quero agendar o exame ${nome}.`
+        : `Quero agendar uma consulta em ${nome}.`;
 
     if (!isClinicoGeral && medicos.length === 1 && medicos[0].medico) {
       const unico = medicos[0].medico;
-      if (grupo === "exames") {
-        mensagemPadrao = `Quero agendar o exame ${nome} com ${unico}.`;
-      } else {
-        mensagemPadrao = `Quero agendar uma consulta com ${unico} (${nome}).`;
-      }
+      mensagemPadrao =
+        grupo === "exames"
+          ? `Quero agendar o exame ${nome} com ${unico}.`
+          : `Quero agendar uma consulta com ${unico} (${nome}).`;
     }
-    const mensagemEscapada = mensagemPadrao.replace(/'/g, "\\'");
+
+    const mensagemEscapada = escapeForOnclick(mensagemPadrao);
 
     let botaoAgendarHtml = "";
 
@@ -210,7 +174,7 @@ function renderCards(lista, containerId) {
         <button
           type="button"
           class="whats-main-btn"
-          onclick="abrirWhatsApp('${mensagemEscapada}'); return false;"
+          onclick="abrirWhatsApp('${mensagemEscapada}', '${grupo}'); return false;"
         >
           <span class="whats-main-btn-label">Agendar via WhatsApp</span>
         </button>
@@ -227,8 +191,7 @@ function renderCards(lista, containerId) {
           <span id="chev-${idBase}" class="card-chevron" aria-hidden="true">›</span>
         </button>
 
-      <div class="card-body subcard card-body--doctors" id="${idBase}">
-
+        <div class="card-body subcard card-body--doctors" id="${idBase}">
           ${medicoListaHtml}
           ${botaoAgendarHtml}
         </div>
@@ -249,12 +212,8 @@ function toggleUniqueSmooth(id, containerId) {
   if (!toOpenBody || !toOpenHeader || !toOpenChevron) return;
 
   const opened = container.querySelector(".subcard.expanded");
-  const openedHeader = opened
-    ? document.getElementById(`hdr-${opened.id}`)
-    : null;
-  const openedChevron = opened
-    ? document.getElementById(`chev-${opened.id}`)
-    : null;
+  const openedHeader = opened ? document.getElementById(`hdr-${opened.id}`) : null;
+  const openedChevron = opened ? document.getElementById(`chev-${opened.id}`) : null;
 
   if (opened && opened.id === id) {
     const willExpand = !opened.classList.contains("expanded");
@@ -354,16 +313,10 @@ function showGrupo(tipo) {
   switchPanel(map[tipo]);
 }
 
-document.addEventListener("click", (event) => {
-  const el = event.target.closest(".link-button.em-breve");
-  if (!el) return;
-  event.preventDefault();
-  alert("Em breve essa função será ativada!");
-});
-
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
 function bindTopBtn() {
   const btnTop = document.getElementById("btnTop");
   if (btnTop && !btnTop.dataset.bound) {
@@ -418,7 +371,6 @@ async function bootstrap(force = false) {
 
   criarBotaoFaleConosco();
 
-  
   await carregarDadosDoSheets();
 
   const sets = [
@@ -427,6 +379,7 @@ async function bootstrap(force = false) {
     ["cardExames", exames],
     ["cardTerapias", terapias],
   ];
+
   sets.forEach(([id, data]) => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = "";
@@ -436,18 +389,6 @@ async function bootstrap(force = false) {
   bindTopBtn();
   prepararMapaSobDemanda();
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  bootstrap();
-  startTypewriter();
-});
-
-window.addEventListener("pageshow", (e) => {
-  if (e.persisted) {
-    bootstrap(true);
-    startTypewriter();
-  }
-});
 
 const TYPEWRITER = {
   enabled: true,
@@ -483,3 +424,15 @@ function startTypewriter() {
 
   setTimeout(() => type(0), TYPEWRITER.startDelayMs);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  bootstrap();
+  startTypewriter();
+});
+
+window.addEventListener("pageshow", (e) => {
+  if (e.persisted) {
+    bootstrap(true);
+    startTypewriter();
+  }
+});
