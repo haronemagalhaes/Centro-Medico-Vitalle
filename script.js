@@ -4,6 +4,8 @@ const telefoneWhatsAppExames = "5582996871245";
 const SHEET_API_URL =
   "https://script.google.com/macros/s/AKfycbyiEI3R0mw7PrutWfGikiTTE2sg4kEtQvse24fqMfTfOcBUjY4On3DX6LrxkmjOClo/exec";
 
+const LINK_AGENDAMENTO_ONLINE_PADRAO = "https://mergecode.com.br/";
+
 let especialidades = [];
 let atendimentos = [];
 let exames = [];
@@ -37,6 +39,11 @@ function abrirWhatsApp(msgBody, grupo = "") {
 
   const url = `https://wa.me/${telefone}?text=${encodeURIComponent(fullMsg)}`;
   window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function abrirAgendamentoOnline(url) {
+  const link = (url || "").trim() || LINK_AGENDAMENTO_ONLINE_PADRAO;
+  window.open(link, "_blank", "noopener,noreferrer");
 }
 
 async function carregarDadosDoSheets() {
@@ -118,6 +125,7 @@ function renderCards(lista, containerId) {
               m.medico || "o(a) médico(a)"
             } (${nome}).`;
             const msgMedEscapada = escapeForOnclick(msgMed);
+            const linkOnlineMedEsc = escapeForOnclick(LINK_AGENDAMENTO_ONLINE_PADRAO);
 
             return `
               <div class="doctor-row doctor-row--with-button">
@@ -127,11 +135,22 @@ function renderCards(lista, containerId) {
                   ${crmHtml}
                   <button
                     type="button"
-                    class="whats-main-btn whats-main-btn--secondary"
+                    class="whats-main-btn whats-main-btn--online"
+                    onclick="abrirAgendamentoOnline('${linkOnlineMedEsc}'); return false;"
+                  >
+                    <span class="whats-main-btn-label">
+                      Agendamento Online
+                      <small class="btn-sub">Sem fila • Confirmação imediata</small>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    class="whats-main-btn whats-main-btn--small"
                     onclick="abrirWhatsApp('${msgMedEscapada}', '${grupo}'); return false;"
                   >
                     <span class="whats-main-btn-label">
-                      Agendar com ${nomeMedico || "profissional"}
+                      Agendar via WhatsApp
+                      <small class="btn-sub">Falar com a recepção</small>
                     </span>
                   </button>
                 </div>
@@ -166,17 +185,35 @@ function renderCards(lista, containerId) {
     }
 
     const mensagemEscapada = escapeForOnclick(mensagemPadrao);
+    const linkOnlineEsc = escapeForOnclick(LINK_AGENDAMENTO_ONLINE_PADRAO);
 
     let botaoAgendarHtml = "";
+    let botaoAgendarOnlineHtml = "";
 
     if (!isClinicoGeral) {
+      botaoAgendarOnlineHtml = `
+        <button
+          type="button"
+          class="whats-main-btn whats-main-btn--online"
+          onclick="abrirAgendamentoOnline('${linkOnlineEsc}'); return false;"
+        >
+          <span class="whats-main-btn-label">
+            Agendamento Online
+            <small class="btn-sub">Sem fila • Confirmação imediata</small>
+          </span>
+        </button>
+      `;
+
       botaoAgendarHtml = `
         <button
           type="button"
-          class="whats-main-btn"
+          class="whats-main-btn whats-main-btn--small"
           onclick="abrirWhatsApp('${mensagemEscapada}', '${grupo}'); return false;"
         >
-          <span class="whats-main-btn-label">Agendar via WhatsApp</span>
+          <span class="whats-main-btn-label">
+            Agendar via WhatsApp
+            <small class="btn-sub">Falar com a recepção</small>
+          </span>
         </button>
       `;
     }
@@ -193,6 +230,7 @@ function renderCards(lista, containerId) {
 
         <div class="card-body subcard card-body--doctors" id="${idBase}">
           ${medicoListaHtml}
+          ${botaoAgendarOnlineHtml}
           ${botaoAgendarHtml}
         </div>
       </div>

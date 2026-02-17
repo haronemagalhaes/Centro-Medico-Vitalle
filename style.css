@@ -906,3 +906,45 @@ body {
   object-fit: contain;       
   display: block;
 }
+.whats-main-btn--online {
+  background: #1864ab;
+  border: 1px solid #1864ab;
+  color: #fff;
+}
+
+.whats-main-btn--online .whats-main-btn-label {
+  color: #fff;
+}
+
+.whats-main-btn--online:hover {
+  filter: brightness(0.95);
+}
+
+.whats-main-btn--online:active {
+  transform: translateY(1px);
+}
+button.whats-main-btn.whats-main-btn--online,
+.whats-main-btn.whats-main-btn--online {
+  background: #1864ab;
+  border: 1px solid #1864ab;
+  color: #fff;
+}
+
+button.whats-main-btn.whats-main-btn--online:hover,
+.whats-main-btn.whats-main-btn--online:hover {
+  background: #114176;
+  border-color: #114176;
+  color: #fff;
+}
+
+button.whats-main-btn.whats-main-btn--online:hover .whats-main-btn-label,
+.whats-main-btn.whats-main-btn--online:hover .whats-main-btn-label {
+  color: #fff;
+}
+.btn-sub {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  opacity: 0.85;
+  margin-top: 4px;
+}
